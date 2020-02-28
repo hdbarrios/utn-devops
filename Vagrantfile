@@ -8,16 +8,8 @@ Vagrant.configure("2") do |config|
   # El directorio completo de boxes se puede ver en la siguiente URL atlas.hashicorp.com/boxes/search
   config.vm.box = "ubuntu/bionic64"
 
-  # Redirecciono puertos desde la maquina virtual a la maquina real. Por ejemplo 
-  # del puerto 80 (web) de la maquina virtual con Debian se podrá acceder a través
-  # del puerto 8081 de nuestro navegador.
-  # Esto se realiza para poder darle visibilidad a los puertos de la maquina virtual 
-  # y además para que no se solapen los puertos con los de nuestra equipo en el caso de que
-  # ese número de puerto este en uso.
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.network "forwarded_port", guest: 3306, host: 4041
-#  config.vm.network "forwarded_port", guest: 8080, host: 8090
-  config.vm.network "forwarded_port", guest: 4567, host: 4567
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  config.vm.network "forwarded_port", guest: 4400, host: 4400
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -57,30 +49,10 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
   #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
-  # such as FTP and Heroku are also available. See the documentation at
-  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  # config.push.define "atlas" do |push|
-  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
-  # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  #config.vm.provision "shell", inline: <<-SHELL
-  #  echo "I am provisioning..."
-  #  date > /etc/vagrant_provisioned_at
-  #SHELL
   
-  # Copia el archivo de configuración del servidor web
-  config.vm.provision "file", source: "Configs/devops.site.conf", destination: "/tmp/devops.site.conf"
+  config.vm.provision "file", source: "hostCOnfigs/ufw", destination: "/tmp/ufw"
   
-  # En este archivo tendremos el provisionamiento de software necesario para nuestra 
-  # maquina virtual. Por ejemplo, servidor web, servidor de base de datos, etc.
-  config.vm.provision :shell, path: "Vagrant.bootstrap.sh", run: "always"
+  config.vm.provision :shell, path: "Vagrant.bootstrap.sh"
   
 
 end

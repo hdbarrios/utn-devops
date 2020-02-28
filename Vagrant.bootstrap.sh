@@ -6,10 +6,25 @@
 sudo apt-get update
 
 # Instalo un servidor web
-sudo apt-get install -y apache2 
+#sudo apt-get install -y apache2 
+# --
+# se desintala servidor apache en la vm de virtual box en ubunto
+if [ -x "$(command -v apache2)"]; then
+	sudo apt-get remove --purge apache2 -y
+	sudo apt-get autoremove -y
+fi
+
+# se crean los directorios para BD y firewall
+if [ ! -d "/var/db/mysql"] ; then
+	sudo mkdir -p /var/db/mysql
+fi
+
+if [ ! -d "/tmp/ufw" ] ; then
+	sudo mv -f /tmp/ufw /etc/default/ufw
+fi
+
 
 ### Configuración del entorno ###
-
 ##Genero una partición swap. Previene errores de falta de memoria
 if [ ! -f "/swapdir/swapfile" ]; then
 	sudo mkdir /swapdir
@@ -28,31 +43,29 @@ APACHE_ROOT="/var/www"
 # ruta de la aplicación
 APP_PATH="$APACHE_ROOT/utn-apps"
 
+# se descarga la app
+cd $APACHE_ROOT
+sudo git clone https://github.com/kratos0804/utn-apps.git 
+cd $APP_PATH
+#sudo git checkout unidad-1
+sudo git checkout unidad-1 
 
-## configuración servidor web
-#copio el archivo de configuración del repositorio en la configuración del servidor web
-if [ -f "/tmp/devops.site.conf" ]; then
-	echo "Copio el archivo de configuracion de apache"
-	sudo mv /tmp/devops.site.conf /etc/apache2/sites-available
-	#activo el nuevo sitio web
-	sudo a2ensite devops.site.conf
-	#desactivo el default
-	sudo a2dissite 000-default.conf
-	#refresco el servicio del servidor web para que tome la nueva configuración
-	sudo service apache2 reload
+# --------------------------------------------------------------------------
+# instalacion de docker
+
+if [ ! -x "$(command -v docker)" ] ; then
+	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+	# se configura repositorio de docker
+	culr -fsSL "https://download.docker.com/linux/ubuntu/gpg" > /tmp/docker_gpg
+	sudo apt-key add < /tmp/docker_gpg && sudo rm -f /tmp/docker_gpg
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+	#se actualiza los paquetes
+	sudo apt-get update -y
+
+	#Instalo docker desde el repositorio oficial
+        sudo apt-get install -y docker-ce docker-compose
+
+        #Lo configuro para que inicie en el arranque
+        sudo systemctl enable docker
 fi
-	
-## aplicación
-
-# descargo la app del repositorio
-if [ ! -d "$APP_PATH" ]; then
-	echo "clono el repositorio"
-	cd $APACHE_ROOT
-	#sudo git clone https://github.com/Fichen/utn-devops-app.git
-	#sudo git clone git@github.com:kratos0804/utn-apps.git
-	sudo git clone https://github.com/kratos0804/utn-apps.git 
-	cd $APP_PATH
-	#sudo git checkout unidad-1
-	sudo git checkout test
-fi
-
