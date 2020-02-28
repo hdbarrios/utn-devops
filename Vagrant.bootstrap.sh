@@ -15,7 +15,7 @@ if [ -x "$(command -v apache2)"]; then
 fi
 
 # se crean los directorios para BD y firewall
-if [ ! -d "/var/db/mysql"] ; then
+if [ ! -d "/var/db/mysql" ] ; then
 	sudo mkdir -p /var/db/mysql
 fi
 
@@ -39,24 +39,28 @@ if [ ! -f "/swapdir/swapfile" ]; then
 fi
 
 # ruta raíz del servidor web
+if [ ! -d "/var/www/" ] ; then 
+	sudo mkdir -p /var/www
+fi
+
 APACHE_ROOT="/var/www"
 # ruta de la aplicación
 APP_PATH="$APACHE_ROOT/utn-apps"
 
 # se descarga la app
 cd $APACHE_ROOT
-sudo git clone https://github.com/kratos0804/utn-apps.git 
-cd $APP_PATH
-#sudo git checkout unidad-1
-sudo git checkout unidad-1 
+#sudo git clone https://github.com/kratos0804/utn-apps.git 
+#cd $APP_PATH
+#sudo git checkout unidad-1 
+sudo git clone -b unidad-2 https://github.com/Fichen/utn-devops-app.git .
 
 # --------------------------------------------------------------------------
 # instalacion de docker
 
 if [ ! -x "$(command -v docker)" ] ; then
-	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+	sudo apte-get update ; sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 	# se configura repositorio de docker
-	culr -fsSL "https://download.docker.com/linux/ubuntu/gpg" > /tmp/docker_gpg
+	curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" > /tmp/docker_gpg
 	sudo apt-key add < /tmp/docker_gpg && sudo rm -f /tmp/docker_gpg
 	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
