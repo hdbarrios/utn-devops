@@ -9,7 +9,7 @@ sudo apt-get update
 #sudo apt-get install -y apache2 
 # --
 # se desintala servidor apache en la vm de virtual box en ubunto
-if [ -x "$(command -v apache2)"]; then
+if [ -x "$(command -v apache2)" ]; then
 	sudo apt-get remove --purge apache2 -y
 	sudo apt-get autoremove -y
 fi
@@ -49,10 +49,10 @@ APP_PATH="$APACHE_ROOT/utn-apps"
 
 # se descarga la app
 cd $APACHE_ROOT
-#sudo git clone https://github.com/kratos0804/utn-apps.git 
+sudo git clone -b unidad-2 https://github.com/kratos0804/utn-apps.git .
 #cd $APP_PATH
 #sudo git checkout unidad-1 
-sudo git clone -b unidad-2 https://github.com/Fichen/utn-devops-app.git .
+#sudo git clone -b unidad-2 https://github.com/Fichen/utn-devops-app.git .
 
 # --------------------------------------------------------------------------
 # instalacion de docker
@@ -73,3 +73,32 @@ if [ ! -x "$(command -v docker)" ] ; then
         #Lo configuro para que inicie en el arranque
         sudo systemctl enable docker
 fi
+
+echo "vagrant ssh: "
+vagrant ssh
+
+#echo " "
+cd /vagrant/docker/
+
+pwd
+
+echo " "
+ls -ltra
+
+echo " "
+echo "creando docker"
+sudo docker-compose up -d
+
+echo " "
+echo "docker creados"
+sudo docker start `sudo docker ps -a | grep php | awk '{print$1}'` 
+sudo docker start `sudo docker ps -a | grep mysql | awk '{print$1}'` 
+sudo docker ps
+
+#echo " "
+#sudo docker exec -i apache2_php cd /var/www/html/myapp
+
+##sudo docker exec -i mysql mysql -uroot -proot devops_app < /tmp/script.sql
+#sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
+
+

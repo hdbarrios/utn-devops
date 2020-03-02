@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
   end
   #
   
-  config.vm.provision "file", source: "hostCOnfigs/ufw", destination: "/tmp/ufw"
+  config.vm.provision "file", source: "hostConfigs/ufw", destination: "/tmp/ufw"
   
   config.vm.provision :shell, path: "Vagrant.bootstrap.sh"
   
