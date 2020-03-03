@@ -11,11 +11,11 @@ services:
       - "/var/www/myapp:/var/www/html/myapp"
     ports:
       - "8081:80" 
-    command: echo "cd /var/www/html/myapp "
-    command: cd /var/www/html/myapp ; pwd
-    command: pwd
-    command: echo "php -dmemory_limit=750M composer.phar update --no-scripts --prefer-dist"
-    command: php -dmemory_limit=750M composer.phar update --no-scripts --prefer-dist
+    # command: echo "cd /var/www/html/myapp "
+    # command: cd /var/www/html/myapp ; pwd
+    # command: pwd
+    # command: echo "php -dmemory_limit=750M composer.phar update --no-scripts --prefer-dist"
+    # command: php -dmemory_limit=750M composer.phar update --no-scripts --prefer-dist
     depends_on:
       - db_server
   db_server:
@@ -29,6 +29,6 @@ services:
     volumes:
       - /var/db/mysql:/var/lib/mysql
       - "./configs/mysql/script.sql:/tmp/script.sql"
-    command: echo "mysql -uroot -proot devops_app < /tmp/script.sql"
-    command: mysql -uroot -proot devops_app < /tmp/script.sql
+    # command: echo "mysql -uroot -proot devops_app < /tmp/script.sql"
+    # command: mysql -uroot -proot devops_app < /tmp/script.sql
 

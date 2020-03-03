@@ -91,14 +91,15 @@ sudo docker-compose up -d
 
 echo " "
 echo "docker creados"
-sudo docker start `sudo docker ps -a | grep php | awk '{print$1}'` 
-sudo docker start `sudo docker ps -a | grep mysql | awk '{print$1}'` 
+#sudo docker start `sudo docker ps -a | grep php | awk '{print$1}'` 
+#sudo docker start `sudo docker ps -a | grep mysql | awk '{print$1}'` 
 sudo docker ps
+sudo docker ps -a
 
 #echo " "
-#sudo docker exec -i apache2_php cd /var/www/html/myapp
+sudo docker exec -i apache2_php cd /var/www/html/myapp
 
 ##sudo docker exec -i mysql mysql -uroot -proot devops_app < /tmp/script.sql
-#sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
+sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
 
 
