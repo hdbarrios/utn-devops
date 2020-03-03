@@ -13,16 +13,13 @@ services:
       - "8081"
     ports:
       - "8081:80" 
-    depends_on:
-      - db_server
-    links: 
-      - db_server
-    networks:
-      - app-network
+    links:
+      - mysql:mysql
   
-  db_server:
+  mysql:
     image: mysql:5.7
     container_name: db_mysql
+    #command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_DATABASE=devops_app #creará una base de datos con ese nombre
       - MYSQL_ROOT_USER=root #usuario de administrador del servidor MySQL
@@ -34,10 +31,3 @@ services:
     volumes:
       - /var/db/mysql:/var/lib/mysql
       - "./configs/mysql/script.sql:/tmp/script.sql"
-    networks:
-      - app-network
-
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge

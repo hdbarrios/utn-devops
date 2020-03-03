@@ -112,11 +112,11 @@ echo " ========================================================================"
 echo "IP WEB SERVER"
 sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddress | tail -1 | awk '{print$2}' | sed 's/\"//g' | sed 's/\,//g'
 
-echo " ========================================================================"
-echo "Adecuando db_connect a la IP del contenedor de BD"
-sudo sed -i 's/127.0.0.1/'${IP_DB}'/' /var/www/myapp/src/include/db_connect.php
-#echo " "
-#sudo docker exec -i apache2_php cd /var/www/html/myapp
+# echo " ========================================================================"
+# echo "Adecuando db_connect a la IP del contenedor de BD"
+# sudo sed -i 's/127.0.0.1/'${IP_DB}'/' /var/www/myapp/src/include/db_connect.php
+# #echo " "
+# #sudo docker exec -i apache2_php cd /var/www/html/myapp
 
 echo " ========================================================================"
 
