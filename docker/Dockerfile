@@ -13,7 +13,7 @@ RUN apt-get update \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
 	&& pecl install imagick \
-	&& apt-get install apt-utils -y
+	&& apt-get install vim apt-utils -y
 
 # Install MCrypt
 RUN apt-get update \

@@ -16,7 +16,9 @@ services:
     depends_on:
       - db_server
     links: 
-      - db_mysql:mysql
+      - db_server
+    networks:
+      - app-network
   
   db_server:
     image: mysql:5.7
@@ -32,4 +34,10 @@ services:
     volumes:
       - /var/db/mysql:/var/lib/mysql
       - "./configs/mysql/script.sql:/tmp/script.sql"
+    networks:
+      - app-network
 
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
