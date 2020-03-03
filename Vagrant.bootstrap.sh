@@ -109,4 +109,4 @@ sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddre
 #echo " "
 #sudo docker exec -i apache2_php cd /var/www/html/myapp
 
-sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
+sudo docker exec -i db_mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
