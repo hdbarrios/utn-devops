@@ -85,19 +85,20 @@ pwd
 echo " "
 ls -ltra
 
+sudo docker ps -a | grep -v CONTAINER | while read line ; do sudo docker rm `echo $line | awk '{print$1}'` ; done
+sudo docker images | grep -v REPOSITORY | while read line ; do sudo docker image rm  `echo $line | awk '{print$3}'` ; done
+
 echo " "
 echo "creando docker"
 sudo docker-compose up -d
 
 echo " "
 echo "docker creados"
-#sudo docker start `sudo docker ps -a | grep php | awk '{print$1}'` 
-#sudo docker start `sudo docker ps -a | grep mysql | awk '{print$1}'` 
 sudo docker ps
 sudo docker ps -a
 
 #echo " "
-sudo docker exec -i apache2_php cd /var/www/html/myapp
+#sudo docker exec -i apache2_php cd /var/www/html/myapp
 
 ##sudo docker exec -i mysql mysql -uroot -proot devops_app < /tmp/script.sql
 sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
