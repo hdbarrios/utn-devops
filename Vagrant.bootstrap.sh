@@ -58,7 +58,7 @@ sudo git clone -b unidad-2 https://github.com/kratos0804/utn-apps.git .
 # instalacion de docker
 
 if [ ! -x "$(command -v docker)" ] ; then
-	sudo apte-get update ; sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+	sudo apt-get update ; sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 	# se configura repositorio de docker
 	curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" > /tmp/docker_gpg
 	sudo apt-key add < /tmp/docker_gpg && sudo rm -f /tmp/docker_gpg
@@ -97,10 +97,16 @@ echo "docker creados"
 sudo docker ps
 sudo docker ps -a
 
+echo " ------------------------------------------------------------- "
+echo "IP DE BASE DE DATOS"
+sudo docker inspect `sudo docker ps | grep mysql | awk '{print$1}'` | grep IPAddress | tail -1 | awk '{print$2}' | sed 's/\"//g' | sed 's/\,//g'
+
+echo " ------------------------------------------------------------- "
+echo "IP WEB SERVER"
+sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddress | tail -1 | awk '{print$2}' | sed 's/\"//g' | sed 's/\,//g'
+
+
 #echo " "
 #sudo docker exec -i apache2_php cd /var/www/html/myapp
 
-##sudo docker exec -i mysql mysql -uroot -proot devops_app < /tmp/script.sql
 sudo docker exec -i mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
-
-

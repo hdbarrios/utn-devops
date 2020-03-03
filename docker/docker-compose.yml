@@ -16,7 +16,7 @@ services:
     depends_on:
       - db_server
     links: 
-      - db_server
+      - db_server:mysql
   
   db_server:
     image: mysql:5.7
