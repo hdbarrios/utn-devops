@@ -3,7 +3,7 @@
 ### Aprovisionamiento de software ###
 
 # Actualizo los paquetes de la maquina virtual
-sudo apt-get update
+sudo apt-get update ; sudo apt-get upgrade
 
 # Instalo un servidor web
 #sudo apt-get install -y apache2 
@@ -71,10 +71,18 @@ if [ ! -x "$(command -v docker)" ] ; then
         sudo apt-get install -y docker-ce docker-compose golang-github-docker-libnetwork-dev \
 		golang-github-containerd-docker-containerd-dev golang-github-docker-engine-api-dev ruby-docker-api \
 		docker-registry libnss-docker
-
         #Lo configuro para que inicie en el arranque
         sudo systemctl enable docker
+
+	sudo docker --version
+	sudo docker-compose --version
+
+	sudo docker-compose migrate-to-labels
+	sudo docker-compose --version
+
 fi
+
+echo " ========================================================================" 
 
 echo "vagrant ssh: "
 vagrant ssh
@@ -100,7 +108,7 @@ fi
 echo " ========================================================================"
 
 echo " "
-echo "creando docker DB"
+echo "creando docker "
 sudo docker-compose stop && docker-compose rm && docker-compose build && docker-compose up -d 	
 
 echo " "

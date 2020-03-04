@@ -1,12 +1,8 @@
-version: '3'
+version: '2'
 services:
-      
   php:
     container_name: apache2_php
     build: .
-    #tty: true
-    #command: curl -s http://getcomposer.org/installer | php
-    #command: php composer.phar require vlucas/phpdotenv
     volumes:
       - ./configs/php/php.ini:/usr/local/etc/php/php.ini
       - ./configs/httpd/devops.site.conf:/etc/apache2/sites-available/000-default.conf
@@ -19,16 +15,9 @@ services:
       - 8081:80 
     depends_on:
       - mysql
-    links:
-      - mysql:${DB_PROVIDER}
-    networks: 
-      net:
-        ipv4_address: 172.21.1.3
-      
   mysql:
-    image:  ${DB_PROVIDER}:${DB_VERSION}
+    image: mysql:5.7 
     container_name: dbmysql
-    #command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_DATABASE=${DB_DATABASE} #creará una base de datos con ese nombre
       - MYSQL_ROOT_USER=${DB_USERNAME}      #usuario de administrador del servidor MySQL
@@ -40,13 +29,3 @@ services:
     volumes:
       - /var/db/mysql:/var/lib/mysql
       - ./configs/mysql/script.sql:/tmp/script.sql
-    networks: 
-      net:
-        ipv4_address: 172.21.1.2
-
-networks: 
-  net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.21.1.0/24
