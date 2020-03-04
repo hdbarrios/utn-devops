@@ -8,12 +8,12 @@ RUN usermod -u 1000 www-data
 RUN groupmod -g 1000 www-data
 
 # Install GD
-RUN apt-get update \
+RUN  apt update --fix-missing && apt upgrade -y \
     && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmagickwand-dev \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
 	&& pecl install imagick \
-	&& apt-get install apt-utils -y
+	&& apt-get install vim apt-utils -y
 
 # Install MCrypt
 RUN apt-get update \
