@@ -17,6 +17,8 @@ services:
       - 8081
     ports:
       - 8081:80 
+    depends_on:
+      - mysql
     links:
       - mysql:${DB_PROVIDER}
     networks: 

@@ -126,9 +126,10 @@ sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddre
 echo " ========================================================================"
 
 echo "creando DB"
-if [ `sudo su - ; ls /var/db/mysql/devops_app | grep welcome | wc -l | awk '{print$1}'` -gt 2  ] ; then
+if [ `sudo su -c "ls /var/db/mysql/devops_app | grep welcome | wc -l | awk '{print$1}'"` -gt 2  ] ; then
 	echo "db y tabla creada"
 else
+	echo "ejecutando sript.sql"
 	sudo docker exec -i dbmysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
 fi
 
