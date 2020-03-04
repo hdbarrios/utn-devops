@@ -68,7 +68,9 @@ if [ ! -x "$(command -v docker)" ] ; then
 	sudo apt-get update -y
 
 	#Instalo docker desde el repositorio oficial
-        sudo apt-get install -y docker-ce docker-compose
+        sudo apt-get install -y docker-ce docker-compose golang-github-docker-libnetwork-dev \
+		golang-github-containerd-docker-containerd-dev golang-github-docker-engine-api-dev ruby-docker-api \
+		docker-registry libnss-docker
 
         #Lo configuro para que inicie en el arranque
         sudo systemctl enable docker
@@ -94,9 +96,12 @@ if [ `sudo docker ps | wc -l` -gt 1 ] ; then
 	sudo docker images | grep -v REPOSITORY | while read line ; do sudo docker image rm  `echo $line | awk '{print$3}'` ; done
 fi
 
+
+echo " ========================================================================"
+
 echo " "
-echo "creando docker"
-sudo docker-compose up -d
+echo "creando docker DB"
+sudo docker-compose stop && docker-compose rm && docker-compose build && docker-compose up -d 	
 
 echo " "
 echo "docker activos "
@@ -121,8 +126,11 @@ sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddre
 echo " ========================================================================"
 
 echo "creando DB"
-if [ `sudo su - ; ls /var/db/mysql/devops_app | grep welcome | wc -l` -gt 2  ] ; then
+if [ `sudo su - ; ls /var/db/mysql/devops_app | grep welcome | wc -l | awk '{print$1}'` -gt 2  ] ; then
 	echo "db y tabla creada"
 else
-	sudo docker exec -i db_mysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
+	sudo docker exec -i dbmysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
 fi
+
+
+
