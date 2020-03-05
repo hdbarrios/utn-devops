@@ -7,6 +7,7 @@ Vagrant.configure("2") do |config|
   # Ubuntu 64 bits mediante el gestor de maquinas virtuales VirtualBox
   # El directorio completo de boxes se puede ver en la siguiente URL atlas.hashicorp.com/boxes/search
   config.vm.box = "ubuntu/bionic64"
+  #config.vm.box = "ubuntu/xenial64"
 
   config.vm.network "forwarded_port", guest: 8081, host: 8081
   config.vm.network "forwarded_port", guest: 4400, host: 4400
@@ -21,9 +22,9 @@ Vagrant.configure("2") do |config|
   # config.vm.network "public_network"
 
   # configuración del nombre de maquina 
-  config.vm.hostname = "utn-apps.localhost"
+  config.vm.hostname = "apps.localhost"
   config.vm.provider "virtualbox" do |v|
-	v.name = "utn-apps-vagrant-ubuntu"
+	v.name = "utn-apps-vagrant-ubuntu-U2"
   end
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
