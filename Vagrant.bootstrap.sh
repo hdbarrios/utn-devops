@@ -56,8 +56,8 @@ APP_PATH="$APACHE_ROOT/utn-apps"
 
 # se descarga la app
 cd $APACHE_ROOT
-#sudo git clone -b unidad-2 https://github.com/kratos0804/utn-apps.git .
-sudo git clone -b unid2-dd https://github.com/kratos0804/utn-apps.git .
+sudo git clone -b unidad-2 https://github.com/kratos0804/utn-apps.git .
+#sudo git clone -b unid2-dd https://github.com/kratos0804/utn-apps.git .
 #cd $APP_PATH
 #sudo git checkout unidad-1 
 #sudo git clone -b unidad-2 https://github.com/Fichen/utn-devops-app.git .
