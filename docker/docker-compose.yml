@@ -15,6 +15,9 @@ services:
       - 8081:80 
     depends_on:
       - mysql
+    env_file:
+      - ./configs/app/.env
+  
   mysql:
     image: mysql:5.7 
     container_name: dbmysql
