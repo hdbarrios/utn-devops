@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# cargo env desde ./docker/.env
+
+. ./docker/.env
+
 ### Aprovisionamiento de software ###
 
 # Actualizo los paquetes de la maquina virtual
@@ -208,19 +212,4 @@ sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddre
 echo " ========================================================================"
 
 echo "creando DB"
-DB_CHECK=`sudo su -c "ls /var/db/mysql/devops_app | grep welcome | wc -l | awk '{print$1}'"`
-echo "---> "$DB_CHECK
-if [ ${DB_CHECK} -gt 2  ] ; then
-	echo "db y tabla creada"
-else
-	echo "ejecutando sript.sql"
-	sudo docker exec -i dbmysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
-fi
-
-#echo "instalando puppet agent"
-
-#sudo docker exec -it apache2_php  puppet node clean utn-devops.localhost && puppet agent --certname utn-devops.localhost --enable 
-
-#sudo docker exec -it dbmysql puppet node clean utn-devops.localhost && puppet agent --certname utn-devops.localhost --enable 
-
-
+sudo docker exec -i dbmysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql

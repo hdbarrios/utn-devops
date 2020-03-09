@@ -10,7 +10,12 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "ubuntu/xenial64"
 
   config.vm.network "forwarded_port", guest: 8081, host: 8081
+  config.vm.network "forwarded_port", guest: 8082, host: 8082
   config.vm.network "forwarded_port", guest: 4400, host: 4400
+
+  config.vm.network "forwarded_port", guest: 8140, host: 8140
+  config.vm.network "forwarded_port", guest: 8141, host: 8141
+  config.vm.network "forwarded_port", guest: 8142, host: 8142
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
