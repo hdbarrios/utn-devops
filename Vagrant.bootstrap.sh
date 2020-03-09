@@ -211,5 +211,6 @@ sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddre
 
 echo " ========================================================================"
 
+sleep 60
 echo "creando DB"
 sudo docker exec -i dbmysql mysql -uroot -proot devops_app < /vagrant/docker/configs/mysql/script.sql
