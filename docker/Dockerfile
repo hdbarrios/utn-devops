@@ -82,6 +82,14 @@ RUN a2enmod rewrite
 #    && echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf \
 #    && echo 'sendmail_path = "/usr/sbin/ssmtp -t"' > /usr/local/etc/php/conf.d/mail.ini
 
+RUN apt-get update && apt-get install systemd -y \
+    &&  ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime \
+	#&& timedatectl set-timezone America/Argentina/Buenos_Aires \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe" ; apt install -y puppet \
+    && apt-get -y install ntp ; service ntp start ; rm -rf /var/lib/puppet/ssl \
+    && service puppet start && puppet node clean utn-devops.localhost && puppet agent --certname utn-devops.localhost --enable 
+
 ########################################################################################################################
 
 # Start!
