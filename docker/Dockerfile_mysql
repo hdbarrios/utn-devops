@@ -1,29 +1,27 @@
 FROM mysql:5.7
 
-# ENV MYSQL_DATABASE devops_app
-# ENV MYSQL_ROOT_PASSWORD root
+ENV MYSQL_DATABASE devops_app
+ENV MYSQL_ROOT_PASSWORD root
 
-# VOLUME ["/var/db/mysql","/var/lib/mysql"]
+VOLUME ["/var/db/mysql","/var/lib/mysql"]
 
-# EXPOSE 4400
+EXPOSE 4400
+EXPOSE 3306
 
-# COPY ./configs/mysql/script.sql /tmp/script.sql
+COPY ./configs/mysql/script.sql /tmp/script.sql
 
 # =============================================================================================
 # Instalando agente puppet
-RUN apt-get update -y && apt-get install software-properties-common -y \
-    && apt-get install -y --no-install-recommends apt-utils \
-    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe" \
-    && apt-get install -y puppet \ 
-	&& systemctl stop puppet && systemctl start puppet
+RUN apt-get update && apt-get install apt-utils systemd -y && \
+    ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime && \
+    apt-get install software-properties-common -y && \
+    add-apt-repository 'deb http://archive.ubuntu.com/ubuntu $$(lsb_release -sc) universe' && \
+    apt install -y puppet && \
+    apt-get -y install ntp && \
+    service ntp start && \
+    rm -rf /var/lib/puppet/ssl && \
+    service puppet start && puppet node clean utn-devops.localhost && puppet agent --certname utn-devops.localhost --enable
 
-RUN timedatectl set-timezone America/Argentina/Buenos_Aires \
-	&& apt-get -y install ntp \
-	&& systemctl restart ntp \
-	&& rm -rf /var/lib/puppet/ssl \
-	&& usermod -a -G sudo,puppet puppet \
-	&& puppet node clean utn-devops.localhost \
-	&& puppet agent --certname utn-devops.localhost --enable
 
 # =============================================================================================
 

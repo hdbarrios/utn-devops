@@ -90,7 +90,6 @@ if [ ! -x "$(command -v docker)" ] ; then
 	sudo docker --version
 	sudo docker-compose --version
 
-	sudo docker-compose migrate-to-labels
 	sudo docker-compose --version
 
 fi
@@ -190,7 +189,7 @@ echo " ========================================================================"
 
 echo " "
 echo "creando docker "
-sudo docker-compose stop && docker-compose rm && docker-compose build && docker-compose up -d 	
+sudo docker-compose stop && docker-compose rm && docker-compose build && docker-compose up -d
 
 echo " "
 echo "docker activos "
