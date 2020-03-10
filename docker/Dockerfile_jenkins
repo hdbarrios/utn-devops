@@ -1,4 +1,4 @@
-FROM jenkins
+FROM jenkins/jenkins 
 
 ENV MYSQL_DATABASE devops_app
 ENV MYSQL_ROOT_PASSWORD root

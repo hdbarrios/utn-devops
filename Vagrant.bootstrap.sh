@@ -199,7 +199,7 @@ echo " ========================================================================"
 
 echo " "
 echo "creando docker "
-sudo docker-compose stop && docker-compose rm && docker-compose build && docker-compose up -d
+sudo docker-compose stop && sudo docker-compose rm && sudo docker-compose build && sudo docker-compose up -d
 
 echo " "
 echo "docker activos "

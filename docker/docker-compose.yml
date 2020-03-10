@@ -41,19 +41,22 @@ services:
       - ./configs/app/.env
 
   jenkins:
-     images: jenkins
-     container_name: jenkins
-     environment:
-      - JAVA_OPTS="-Djava.awt.headless=true"
-      - JENKINS_HOME="/var/jenkins_home"
-      - JENKINS_SLAVE_AGENT_PORT=50000
-     env_file:
-      - ./configs/app/.env
-     ports:
-      - 8090:8080 
-      - 50000:50000
-      - 8143:8140
-     volumes:
-      - /var/lib/jenkins:/var/lib/jenkins/
-      - /var/lib/jenkins/workspace:/var/lib/jenkins/workspace
-      - ./configs/jenkins:/tmp/jenkins
+    image: jenkins/jenkins
+    container_name: jenkins
+    environment:
+     - JAVA_OPTS="-Djava.awt.headless=true"
+     - JENKINS_HOME="/var/jenkins_home"
+     - JENKINS_SLAVE_AGENT_PORT=50000
+    env_file:
+     - ./configs/app/.env
+    depends_on:
+     - mysql
+     - php 
+    ports:
+     - 8090:8080 
+     - 50000:50000
+     - 8143:8140
+    volumes:
+     - /var/lib/jenkins:/var/lib/jenkins/
+     - /var/lib/jenkins/workspace:/var/lib/jenkins/workspace
+     - ./configs/jenkins:/tmp/jenkins
