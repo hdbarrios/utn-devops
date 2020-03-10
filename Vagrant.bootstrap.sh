@@ -35,8 +35,13 @@ fi
 
 # se crean los directorios para BD y firewall
 if [ ! -d "/var/db/mysql" ] ; then
-echo "etapa 1.2:"
+	echo "etapa 1.2:"
 	sudo mkdir -p /var/db/mysql
+fi
+
+if [ ! -d "/var/lib/jenkins/workspace" ] ; then
+	echo "etapa 1.3:"
+	sudo mkdir -p /var/lib/jenkins/workspace
 fi
 
 ### Configuración del entorno ###
@@ -150,11 +155,12 @@ fi
 sudo ufw allow 8140/tcp
 sudo ufw allow 8141/tcp
 sudo ufw allow 8142/tcp
+sudo ufw allow 8143/tcp
 
 # al detener e iniciar el servicio se regeneran los certificados
 echo "Reiniciando servicios puppetmaster y puppet agent"
 sudo systemctl stop puppetmaster && sudo systemctl start puppetmaster
-sudo systemctl stop puppet && sudo systemctl start puppet
+#sudo systemctl stop puppet && sudo systemctl start puppet
 
 
 # limpieza de configuración del dominio utn-devops.localhost es nuestro nodo agente.
@@ -162,7 +168,7 @@ sudo systemctl stop puppet && sudo systemctl start puppet
 sudo puppet node clean utn-devops.localhost
 
 # Habilito el agente
-sudo puppet agent --certname utn-devops.localhost --enable
+#sudo puppet agent --certname utn-devops.localhost --enable
 
 echo " ========================================================================" 
 
@@ -208,6 +214,9 @@ IP_BD=`sudo docker inspect \`sudo docker ps | grep mysql | awk '{print$1}'\` | g
 echo " ========================================================================"
 echo "IP WEB SERVER"
 sudo docker inspect `sudo docker ps | grep php | awk '{print$1}'` | grep IPAddress | tail -1 | awk '{print$2}' | sed 's/\"//g' | sed 's/\,//g'
+echo " ========================================================================"
+echo "IP JENKINS"
+sudo docker inspect `sudo jenkins ps | grep php | awk '{print$1}'` | grep IPAddress | tail -1 | awk '{print$2}' | sed 's/\"//g' | sed 's/\,//g'
 
 echo " ========================================================================"
 

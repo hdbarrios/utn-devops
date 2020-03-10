@@ -1,0 +1,36 @@
+FROM mysql:5.7
+
+ENV MYSQL_DATABASE devops_app
+ENV MYSQL_ROOT_PASSWORD root
+ENV JAVA_OPTS -Djava.awt.headless=true
+ENV JENKINS_HOME "/var/jenkins_home"
+ENV JENKINS_SLAVE_AGENT_PORT 50000
+
+VOLUME ["/var/db/mysql","/var/lib/mysql"]
+VOLUME ["/var/lib/jenkins","/var/lib/jenkins/"]
+VOLUME ["/var/lib/jenkins/workspace","/var/lib/jenkins/workspace"]
+VOLUME ["./configs/jenkins","/tmp/jenkins"]
+
+#EXPOSE 4400
+#EXPOSE 3306
+
+COPY ./configs/jenkins/install-plugins.sh /tmp/install-plugins.sh
+
+# =============================================================================================
+# Instalando agente puppet
+RUN apt-get update && apt-get install apt-utils systemd -y && \
+    ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime && \
+    apt-get install software-properties-common -y && \
+    add-apt-repository 'deb http://archive.ubuntu.com/ubuntu $$(lsb_release -sc) universe' && \
+    apt install -y puppet && \
+    apt-get -y install ntp && \
+    service ntp start && \
+    rm -rf /var/lib/puppet/ssl && \
+    service puppet start && puppet node clean utn-devops.localhost && puppet agent --certname utn-devops.localhost --enable
+
+
+# =============================================================================================
+
+# Start!
+#COPY ./start /usr/local/bin/
+#CMD ["start"]
