@@ -41,7 +41,7 @@ services:
       - ./configs/app/.env
 
   jenkins:
-     images: 
+     images: jenkins
      container_name: jenkins
      environment:
       - JAVA_OPTS="-Djava.awt.headless=true"
